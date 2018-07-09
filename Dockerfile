@@ -6,10 +6,18 @@ ARG DC_VERSION=1.18.0
 USER root
 
 RUN apt-get update && \
-    apt-get install -qq -y --no-install-recommends \
+    apt-get install -qq -y --no-install-recomments \
+      curl \
+      locales \
+      openssh-client \
+    curl -LO https://github.com/tmate-io/tmate/releases/download/2.2.1/tmate-2.2.1-static-linux-amd64.tar.gz && \
+    tar -xzvf tmate-2.2.1-static-linux-amd64.tar.gz && \
+    mv tmate-2.2.1-static-linux-amd64/tmate /usr/local/bin/tmate && \
+    ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa
+
+RUN apt-get install -qq -y --no-install-recommends \
       apt-transport-https \
       ca-certificates \
-      curl \
       gnupg2 \
       software-properties-common && \
     curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
